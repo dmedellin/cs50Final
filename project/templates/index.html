@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <title>AngularClient</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.31d6cfe0d16ae931b73c.css">
 </head>
+
 <body>
-    <h1>Microsoft Identity Python Web App</h1>
-    <h2>Welcome {{ user.get("name") }}!</h2>
+    <app-root></app-root>
+    <script src="runtime.35f159139dca69715587.js" defer></script>
+    <script src="polyfills.c255253c6bbefebffa47.js" defer></script>
+    <script src="main.92b3a2f36449ef0643bc.js" defer></script>
 
-    {% if config.get("ENDPOINT") %}
-      <li><a href='/graphcall'>Call Microsoft Graph API</a></li>
-    {% endif %}
-
-    {% if config.get("B2C_PROFILE_AUTHORITY") %}
-      <li><a href='{{_build_auth_code_flow(authority=config["B2C_PROFILE_AUTHORITY"])["auth_uri"]}}'>Edit Profile</a></li>
-    {% endif %}
-
-    <li><a href="/logout">Logout</a></li>
-    <hr>
-    <footer style="text-align: right">Powered by MSAL Python {{ version }}</footer>
 </body>
-</html>
 
+</html>
