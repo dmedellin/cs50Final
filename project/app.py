@@ -1,14 +1,12 @@
 import uuid
 import requests
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, jsonify, render_template, session, request, redirect, url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 
 
-app = Flask(__name__,
-            static_url_path='', 
-            static_folder='static')
+app = Flask(__name__, static_url_path="", static_folder="static")
 app.config.from_object(app_config)
 Session(app)
 
@@ -20,11 +18,12 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
+
 @app.route("/")
 def index():
     if not session.get("user"):
         return redirect(url_for("login"))
-    return render_template('_index.html', user=session["user"], version=msal.__version__)
+    return render_template("index.html", user=session["user"], version=msal.__version__)
 
 
 @app.route("/login")
@@ -77,7 +76,7 @@ def graphcall():
         app_config.TASKENDPOINT,
         headers={"Authorization": "Bearer " + token["access_token"]},
     ).json()
-    return render_template("display.html", result=graph_data)
+    return jsonify(graph_data["value"])
 
 
 def _load_cache():
@@ -122,4 +121,4 @@ app.jinja_env.globals.update(
 )  # Used in template
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

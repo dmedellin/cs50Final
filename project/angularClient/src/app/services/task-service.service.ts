@@ -6,9 +6,13 @@ import { HttpClient } from '@angular/common/http';
 export class TaskServiceService {
 
   constructor(private http: HttpClient) {
-    http.get("http://localhost:5000/graphcall").subscribe(x => {
-      console.log(x);
-    });
+
 
   }
+
+  getTasks() {
+    return this.http.get("/graphcall");
+
+  }
+
 }
