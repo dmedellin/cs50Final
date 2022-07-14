@@ -67,8 +67,8 @@ def logout():
     )
 
 
-@app.route("/graphcall")
-def graphcall():
+@app.route("/GetTaskList")
+def getTaskList():
     token = _get_token_from_cache(app_config.SCOPE)
     if not token:
         return redirect(url_for("login"))
@@ -77,6 +77,25 @@ def graphcall():
         headers={"Authorization": "Bearer " + token["access_token"]},
     ).json()
     return jsonify(graph_data["value"])
+
+
+@app.route("/CreateTaskList", methods=["POST"])
+def createTaskList():
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+    if not request.json or not "displayName" in request.json:
+        return "Record not found", 400
+
+    response = requests.post(  # Use token to call downstream service
+        app_config.TASKENDPOINT,
+        headers={
+            "Authorization": "Bearer " + token["access_token"],
+            "Content-Type": "application/json",
+        },
+        data=jsonify(request.json).data,
+    )
+    return "done"
 
 
 def _load_cache():

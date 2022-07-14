@@ -11,8 +11,11 @@ export class TaskServiceService {
   }
 
   getTasks() {
-    return this.http.get("/graphcall");
+    return this.http.get("/GetTaskList");
 
   }
+  createTasks(displayName: any) {
+    return this.http.post("/CreateTaskList", { displayName: displayName });
 
+  }
 }
