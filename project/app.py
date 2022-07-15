@@ -95,7 +95,7 @@ def createTaskList():
         },
         data=jsonify(request.json).data,
     )
-    return "done"
+    return jsonify({"result": "done"})
 
 
 def _load_cache():
