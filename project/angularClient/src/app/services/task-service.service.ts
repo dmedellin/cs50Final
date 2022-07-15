@@ -18,4 +18,8 @@ export class TaskServiceService {
     return this.http.post("/CreateTaskList", { displayName: displayName });
 
   }
+  deleteTasks(id: any) {
+    return this.http.post("/deleteTaskList", { id: id });
+
+  }
 }

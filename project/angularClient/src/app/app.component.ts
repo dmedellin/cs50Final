@@ -12,6 +12,8 @@ export class AppComponent {
   goals: any[] = [];
   displayName: string = '';
   formModal: any;
+  offcanvas: any;
+  selectedTaskLis: any;
   constructor(private taskService: TaskServiceService) {
     this.taskService.getTasks().subscribe(data => {
       this.goals = data as [];
@@ -29,16 +31,30 @@ export class AppComponent {
       this.formModal = new window.bootstrap.Modal(
         document.getElementById('exampleModal')
       );
+      this.offcanvas = new window.bootstrap.Offcanvas(
+        document.getElementById('offcanvasWithBothOptions')
+      );
     });
   }
   creteNew() {
     this.displayName = "";
     this.formModal.show();
   }
+  openOffset(id: any) {
+    this.selectedTaskLis = id;
+    this.offcanvas.show();
+  }
   saveNew() {
     this.taskService.createTasks(this.displayName).subscribe(data => {
       console.log(data);
       this.formModal.hide();
+
+    });
+  }
+  deleteNew() {
+    this.taskService.deleteTasks(this.selectedTaskLis).subscribe(data => {
+      console.log(data);
+      this.offcanvas.hide();
 
     });
   }

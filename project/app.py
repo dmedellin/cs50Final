@@ -98,6 +98,24 @@ def createTaskList():
     return jsonify({"result": "done"})
 
 
+@app.route("/deleteTaskList", methods=["POST"])
+def deleteTaskList():
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+    if not request.json or not "id" in request.json:
+        return "Record not found", 400
+
+    response = requests.delete(  # Use token to call downstream service
+        app_config.TASKENDPOINT + "/" + request.json["id"],
+        headers={
+            "Authorization": "Bearer " + token["access_token"],
+            "Content-Type": "application/json",
+        },
+    )
+    return jsonify({"result": "done"})
+
+
 def _load_cache():
     cache = msal.SerializableTokenCache()
     if session.get("token_cache"):
