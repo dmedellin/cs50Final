@@ -79,6 +79,21 @@ def getTaskList():
     return jsonify(graph_data["value"])
 
 
+@app.route("/GetTasks")
+def getTasks():
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+
+    if not request.args or not "id" in request.args:
+        return "Record not found", 400
+    graph_data = requests.get(  # Use token to call downstream service
+        app_config.TASKENDPOINT + "/" + request.args.get("id") + "/tasks",
+        headers={"Authorization": "Bearer " + token["access_token"]},
+    ).json()
+    return jsonify(graph_data["value"])
+
+
 @app.route("/CreateTaskList", methods=["POST"])
 def createTaskList():
     token = _get_token_from_cache(app_config.SCOPE)

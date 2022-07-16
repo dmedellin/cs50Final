@@ -10,9 +10,8 @@ export class TaskServiceService {
 
   }
 
-  getTasks() {
+  getTasksList() {
     return this.http.get("/GetTaskList");
-
   }
   createTasks(displayName: any) {
     return this.http.post("/CreateTaskList", { displayName: displayName });
@@ -20,6 +19,8 @@ export class TaskServiceService {
   }
   deleteTasks(id: any) {
     return this.http.post("/deleteTaskList", { id: id });
-
+  }
+  getTasks(id: any) {
+    return this.http.get("/GetTasks?id="+id);
   }
 }

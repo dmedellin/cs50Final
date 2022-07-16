@@ -9,31 +9,36 @@ declare var window: any;
 export class AppComponent {
   title = 'angularClient';
   rows: any[] = [];
+  tasks: any[] = [];
   goals: any[] = [];
   displayName: string = '';
   formModal: any;
   offcanvas: any;
   selectedTaskLis: any;
   constructor(private taskService: TaskServiceService) {
-    this.taskService.getTasks().subscribe(data => {
+    this.loadTaskList();
+
+  }
+  ngAfterViewInit() {
+    this.formModal = new window.bootstrap.Modal(
+      document.getElementById('exampleModal')
+    );
+    this.offcanvas = new window.bootstrap.Offcanvas(
+      document.getElementById('offcanvasWithBothOptions')
+    );
+  }
+  loadTaskList() {
+    this.taskService.getTasksList().subscribe(data => {
       this.goals = data as [];
       var row: any = [];
       this.goals.forEach((element) => {
         row.push(element);
         if (row.length == 3) {
           this.rows.push(row);
-
           row = [];
         }
       });
       this.rows.push(row);
-
-      this.formModal = new window.bootstrap.Modal(
-        document.getElementById('exampleModal')
-      );
-      this.offcanvas = new window.bootstrap.Offcanvas(
-        document.getElementById('offcanvasWithBothOptions')
-      );
     });
   }
   creteNew() {
@@ -42,12 +47,16 @@ export class AppComponent {
   }
   openOffset(id: any) {
     this.selectedTaskLis = id;
+    this.taskService.getTasks(id).subscribe(data => {
+      this.tasks = data as [];
+    });
     this.offcanvas.show();
   }
   saveNew() {
     this.taskService.createTasks(this.displayName).subscribe(data => {
       console.log(data);
       this.formModal.hide();
+      this.loadTaskList();
 
     });
   }
@@ -55,7 +64,7 @@ export class AppComponent {
     this.taskService.deleteTasks(this.selectedTaskLis).subscribe(data => {
       console.log(data);
       this.offcanvas.hide();
-
+      this.loadTaskList();
     });
   }
 }
