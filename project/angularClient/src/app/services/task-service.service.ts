@@ -20,7 +20,10 @@ export class TaskServiceService {
   deleteTasks(id: any) {
     return this.http.post("/deleteTaskList", { id: id });
   }
+  saveSession(projectId: any, duration: number, comments: any) {
+    return this.http.post("/SaveSession", { projectId: projectId, duration: duration, comments: comments });
+  }
   getTasks(id: any) {
-    return this.http.get("/GetTasks?id="+id);
+    return this.http.get("/GetTasks?id=" + id);
   }
 }

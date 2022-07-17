@@ -87,6 +87,13 @@ export class AppComponent {
 
     });
   }
+
+  saveSession() {
+    this.taskService.saveSession('s', 12, "123").subscribe(data => {
+      console.log(data);
+    });
+  }
+
   deleteNew() {
     this.taskService.deleteTasks(this.selectedTaskLis).subscribe(data => {
       console.log(data);

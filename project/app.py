@@ -4,7 +4,7 @@ from flask import Flask, jsonify, render_template, session, request, redirect, u
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
-
+import sessions_repository
 
 app = Flask(__name__, static_url_path="", static_folder="static")
 app.config.from_object(app_config)
@@ -109,6 +109,24 @@ def createTaskList():
             "Content-Type": "application/json",
         },
         data=jsonify(request.json).data,
+    )
+    return jsonify({"result": "done"})
+
+
+@app.route("/SaveSession", methods=["POST"])
+def saveSession():
+    token = _get_token_from_cache(app_config.SCOPE)
+    if not token:
+        return redirect(url_for("login"))
+    if (
+        not request.json
+        or not "projectId" in request.json
+        or not "duration" in request.json
+    ):
+        return "missing data", 400
+
+    sessions_repository.saveSession(
+        request.json["projectId"], request.json["duration"], request.json["comments"]
     )
     return jsonify({"result": "done"})
 
