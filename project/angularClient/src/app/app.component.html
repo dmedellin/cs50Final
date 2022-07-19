@@ -109,9 +109,11 @@
       </div>
       <div class="modal-body">
         <h1 class="display-1">{{timeDisplay}}</h1>
+       <span>{{sessionTime}}</span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="pauseSession()">Pause</button>
         <button type="button" class="btn btn-primary" (click)="saveSession()">Save</button>
       </div>
     </div>

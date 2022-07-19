@@ -17,10 +17,13 @@ export class AppComponent {
   selectedTaskLis: any;
   sessionModal: any;
   timeDisplay: any;
+  intervalId: any;
+  duration: any;
+  timer: any;
+  sessionTime: any;
 
   constructor(private taskService: TaskServiceService) {
     this.loadTaskList();
-
   }
   ngAfterViewInit() {
     this.formModal = new window.bootstrap.Modal(
@@ -34,22 +37,50 @@ export class AppComponent {
     );
   }
   startSession() {
-    var duration = 60 * 25;
-    var timer = duration, minutes: number, seconds: number;
-    setInterval(() => {
-      minutes = parseInt((timer / 60).toString(), 10);
-      seconds = parseInt((timer % 60).toString(), 10);
+    this.sessionTime = 0;
+    if (this.intervalId)
+      clearInterval(this.intervalId)
+
+    this.duration = 60 * 1;
+    this.startTimer(this.duration);
+    this.sessionModal.show();
+  }
+  startTimer(duration: number) {
+    this.timer = duration;
+    var minutes: number, seconds: number;
+    this.intervalId = setInterval(() => {
+      minutes = parseInt((this.timer / 60).toString(), 10);
+      seconds = parseInt((this.timer % 60).toString(), 10);
 
       var displayMinutes = minutes < 10 ? "0" + minutes : minutes;
       var displaySeconds = seconds < 10 ? "0" + seconds : seconds;
 
       this.timeDisplay = displayMinutes + ":" + displaySeconds;
-
-      if (--timer < 0) {
-        timer = duration;
+      var timepast = --this.timer;
+      if (timepast < 0) {
+        this.completeSession();
+      }
+      else {
+        this.sessionTime++;
       }
     }, 1000);
-    this.sessionModal.show();
+  }
+  restartSession() {
+    this.startTimer(this.timer);
+  }
+
+  pauseSession() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    else {
+      if (this.timer > 0)
+        this.restartSession();
+    }
+  }
+  completeSession() {
+    clearInterval(this.intervalId);
   }
   loadTaskList() {
     this.rows = [];
