@@ -21,7 +21,7 @@ export class AppComponent {
   duration: any;
   timer: any;
   sessionTime: any;
-
+  taskId: any;
   constructor(private taskService: TaskServiceService) {
     this.loadTaskList();
   }
@@ -36,7 +36,8 @@ export class AppComponent {
       document.getElementById('sessionModal')
     );
   }
-  startSession() {
+  startSession(taskId: any) {
+    this.taskId = taskId;
     this.sessionTime = 0;
     if (this.intervalId)
       clearInterval(this.intervalId)
@@ -120,7 +121,7 @@ export class AppComponent {
   }
 
   saveSession() {
-    this.taskService.saveSession('s', 12, "123").subscribe(data => {
+    this.taskService.saveSession(this.taskId, this.sessionTime, null).subscribe(data => {
       console.log(data);
     });
   }
