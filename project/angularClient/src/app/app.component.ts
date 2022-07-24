@@ -11,8 +11,6 @@ export class AppComponent {
   rows: any[] = [];
   goals: any[] = [];
   tasks: any[] = [];
-  displayName: string = '';
-  formModal: any;
   offcanvas: any;
   selectedTaskLis: any;
   sessionModal: any;
@@ -26,9 +24,7 @@ export class AppComponent {
     this.loadTaskList();
   }
   ngAfterViewInit() {
-    this.formModal = new window.bootstrap.Modal(
-      document.getElementById('createModal')
-    );
+
     this.offcanvas = new window.bootstrap.Offcanvas(
       document.getElementById('offcanvasWithBothOptions')
     );
@@ -99,10 +95,7 @@ export class AppComponent {
       this.rows.push(row);
     });
   }
-  creteNew() {
-    this.displayName = "";
-    this.formModal.show();
-  }
+
   openOffset(id: any) {
     this.selectedTaskLis = id;
     this.tasks = [];
@@ -111,14 +104,7 @@ export class AppComponent {
     });
     this.offcanvas.show();
   }
-  saveNew() {
-    this.taskService.createTasks(this.displayName).subscribe(data => {
-      console.log(data);
-      this.formModal.hide();
-      this.loadTaskList();
 
-    });
-  }
 
   saveSession() {
     this.taskService.saveSession(this.taskId, this.sessionTime, null).subscribe(data => {
