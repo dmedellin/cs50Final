@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class TaskServiceService {
+export class TaskService {
 
   constructor(private http: HttpClient) {
 

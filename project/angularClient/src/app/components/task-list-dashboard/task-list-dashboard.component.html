@@ -1,0 +1,7 @@
+<ng-container>
+  <div *ngFor="let row of rows" class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    <div *ngFor="let goal of row" class="col">
+      <app-task-list-tile [goal]="goal"></app-task-list-tile>
+    </div>
+  </div>
+</ng-container>
